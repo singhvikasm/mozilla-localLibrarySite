@@ -37,5 +37,22 @@ AuthorSchema
 .get(function(){
   return this.date_of_death ? moment(this.date_of_death).format('YYYY-MM-DD') : '';
 });
+
+AuthorSchema
+.virtual('lifespan')
+.get(function(){
+  var lifespan = '';
+  if(this.date_of_birth){
+      lifespan += moment(this.date_of_birth).format('YYYY-MM-DD');
+  }
+  if (this.date_of_birth && this.date_of_death) {
+      lifespan += ' - ';
+  }
+  if (this.date_of_death) {
+      lifespan += moment(this.date_of_death).format('YYYY-MM-DD');
+  }
+  return lifespan;
+});
+
 //Export model
 module.exports = mongoose.model('Author', AuthorSchema);
